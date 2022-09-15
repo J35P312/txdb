@@ -80,7 +80,12 @@ def update_db(sample,gtf,db,counts):
 
 	return(db,counts)
 
-def print_db(samples,db):
+def print_db(samples,db,prefix):
+	clean_db=open("{}.gtf".format(prefix),"w")
+	full_db=open("{}.full.gtf".format(prefix),"w")
+	clean_out=[]
+	full_out=[]
+
 	for tx in db:
 		chromosome=db[tx]["chr"]
 		tx_start=str(db[tx]["start"])
@@ -95,14 +100,17 @@ def print_db(samples,db):
 		s="samples \"{}\"".format("|".join(db[tx]["samples"]) )
 		tx_data=[tx_string,gene_name,transcript_name,frequency,counts,s]
 		tx_out.append("; ".join(tx_data))
-		print("\t".join(tx_out))
+		clean_out.append( "\t".join(tx_out) )
+		full_out.append( "\t".join(tx_out) )
 
-		#for exon in db[tx]["exons"]:
-		#	exon_out=[chromosome,"txmix","exon",str(exon[0]),str(exon[1]),"1000",strand,".","; ".join(tx_data)]
-		#	print("\t".join(exon_out))
+		for exon in db[tx]["exons"]:
+			exon_out=[chromosome,"txmix","exon",str(exon[0]),str(exon[1]),"1000",strand,".","; ".join(tx_data)]
+			full_out.append("\t".join(exon_out))
 
+	clean_db.write("\n".join(clean_out) )
+	full_db.write("\n".join(full_out) )
 	
-def main(files):
+def main(files,prefix):
 	in_files={}
 	for line in open(files):
 		sample=line.split("/")[-1].split(".")[0]
@@ -131,4 +139,4 @@ def main(files):
 		total+=time.time()-t
 
 	#print("read",read,"total",total)
-	print_db(in_files.keys(),db)
+	print_db(in_files.keys(),db,prefix)

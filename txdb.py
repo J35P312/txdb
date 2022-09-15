@@ -18,18 +18,20 @@ if sys.argv[1] not in set(["build","query","filter"]):
 	quit()
 
 if sys.argv[1] == "build":
-	if len(sys.argv) < 3:
+	if len(sys.argv) < 4:
 		print("missing argument")
-		print("python txdb.py build input.txt")
+		print("python txdb.py build input.txt prefix")
 		print("input.txt is a file containing path to stringtie gtf")
+		quit()
 
-	build.main(sys.argv[2])
+	build.main(sys.argv[2],sys.argv[3])
 
 elif sys.argv[1] == "query":
 	if len(sys.argv) < 4:
 		print("missing argument")
 		print("python txdb.py in.gtf db.gtf")
 		print("in.gtf is a stringtie gtf, db.gtf is a database produced through txdb.py build")
+		quit()
 
 	query.main(sys.argv[2],sys.argv[3])
 

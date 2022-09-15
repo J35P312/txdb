@@ -9,6 +9,6 @@ input.txt is a file containing file path to stringtie gtf
 
 # Query
 
-	python txdb.py build in.gtf db.gtf > query.gtf
+	python txdb.py query in.gtf db.gtf > query.gtf
 
 # Filter
